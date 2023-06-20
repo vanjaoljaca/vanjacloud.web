@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: vanjacloud
+  description: Central cloud for vanja, a Jarvis-like system that does a bit of everything.
+  version: 'v1'
+servers:
+  - url: https://cloud.vanjabigo.com/api
+paths:
+  /main/spotify:
+    get:
+      operationId: getSpotify
+      summary: Get spotify integration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSpotifyResponse'
+components:
+  schemas:
+    getSpotifyResponse:
+      type: object
+      properties:
+        spotify:
+          type: boolean
+          description: A boolean indicating whether spotify is enabled or not.
