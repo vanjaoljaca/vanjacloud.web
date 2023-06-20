@@ -9,7 +9,8 @@
     },
     "api": {
         "type": "openapi",
-        "url": "http://localhost:3333/openapi.yaml"
+        "url": "https://vanjacloud.oljaca.me/openapi.yaml",
+
     },
     "logo_url": "https://www.freepnglogos.com/uploads/tut-wuri-handayani-png-logo/vector-wuri-handayani-warna-0.png",
     "contact_email": "vanjab+vanjacloud@gmail.com",
