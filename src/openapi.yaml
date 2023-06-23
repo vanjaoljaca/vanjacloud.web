@@ -4,7 +4,7 @@ info:
   description: Central cloud for vanja, a Jarvis-like system that does a bit of everything.
   version: 'v1'
 servers:
-  - url: https://cloud.vanjabigo.com/api
+  - url: https://cloud.vanja.oljaca.me/api
 paths:
   /main/spotify:
     get:
