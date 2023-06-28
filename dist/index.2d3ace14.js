@@ -2941,10 +2941,8 @@ var prevRefreshSig = window.$RefreshSig$;
 $parcel$ReactRefreshHelpers$2a8f.prelude(module);
 
 try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _reactDefault = parcelHelpers.interopDefault(_react);
 var _client = require("react-dom/client");
 var _app = require("./App");
 const container = document.getElementById("app");
@@ -2960,7 +2958,7 @@ root.render(/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _app.App), {}, void 0, 
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-dom/client":"lOjBx","./App":"7F5Te","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"iTorj":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-dom/client":"lOjBx","./App":"7F5Te","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"iTorj":[function(require,module,exports) {
 "use strict";
 module.exports = require("ee51401569654d91");
 
@@ -27154,23 +27152,209 @@ $parcel$ReactRefreshHelpers$0342.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// https://parceljs.org/features/production/
 parcelHelpers.export(exports, "App", ()=>App);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+var _s = $RefreshSig$(), _s1 = $RefreshSig$();
+const isProd = true;
+const vanjaCloudUrl = isProd ? "https://cloud.vanja.oljaca.me" : "https://dev.cloud.vanja.oljaca.me";
+async function getBlogAPI(blogId) {
+    // todo: blog id to query param? /${blogId}
+    const response = await fetch(`${vanjaCloudUrl}/api/main/blog`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            blogId
+        })
+    });
+    const json = await response.json();
+    console.log(json);
+    return json;
+}
+async function sendMessageAPI(blogId, context, message) {
+    const response = await fetch(`${vanjaCloudUrl}/api/main/chat`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            blogId,
+            context,
+            message
+        })
+    });
+    const json = await response.json();
+    console.log(json);
+    return json.response;
+}
 function App() {
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-        children: "Hello world!"
-    }, void 0, false, {
+    _s();
+    const [blogId, setBlogId] = (0, _reactDefault.default).useState(1); // [state, setState
+    const [blogText, setBlogText] = (0, _reactDefault.default).useState("");
+    const [initialized, setInitialized] = (0, _reactDefault.default).useState(false);
+    if (!initialized) {
+        console.log("initializing");
+        getBlogAPI(blogId).then((blog)=>{
+            setInitialized(true);
+            setBlogId(blog.id);
+            setBlogText(blog.text);
+            console.log(blog);
+        });
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            children: "initializing"
+        }, void 0, false, {
+            fileName: "src/App.tsx",
+            lineNumber: 50,
+            columnNumber: 16
+        }, this);
+    }
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                children: "Hello world!"
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 54,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: [
+                    "id: ",
+                    blogId
+                ]
+            }, void 0, true, {
+                fileName: "src/App.tsx",
+                lineNumber: 55,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: blogText
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 56,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: (e)=>sendMessageAPI(blogId, null, "test"),
+                children: "test"
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 57,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(ChatInterface, {
+                blogId: blogId
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 58,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "src/App.tsx",
-        lineNumber: 5,
-        columnNumber: 10
+        lineNumber: 53,
+        columnNumber: 13
     }, this);
 }
+_s(App, "/i8u9sZmqxhlTSmFTFInduYBjOk=");
 _c = App;
-var _c;
+const ChatInterface = ({ blogId  })=>{
+    _s1();
+    const [messages, setMessages] = (0, _react.useState)([]);
+    const [input, setInput] = (0, _react.useState)("");
+    const sendMessage = async (message)=>{
+        // Add the message to the chat box
+        const m = [
+            ...messages,
+            {
+                text: message,
+                sender: "user"
+            }
+        ];
+        setMessages(m);
+        // Call your async function to get a response from the server
+        const response = await sendMessageAPI(blogId, messages, message);
+        // Add the response to the chat box
+        setMessages([
+            ...m,
+            {
+                text: response,
+                sender: "server"
+            }
+        ]);
+        return null;
+    };
+    const handleSend = ()=>{
+        if (input.trim() !== "") {
+            sendMessage(input);
+            setInput("");
+        }
+    };
+    const handleKeyPress = (event)=>{
+        if (event.key === "Enter") handleSend();
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                children: messages.map((message, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                children: [
+                                    message.sender,
+                                    ":"
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/App.tsx",
+                                lineNumber: 100,
+                                columnNumber: 25
+                            }, undefined),
+                            " ",
+                            message.text
+                        ]
+                    }, index, true, {
+                        fileName: "src/App.tsx",
+                        lineNumber: 99,
+                        columnNumber: 21
+                    }, undefined))
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 97,
+                columnNumber: 13
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                type: "text",
+                value: input,
+                onChange: (e)=>setInput(e.target.value),
+                onKeyPress: handleKeyPress
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 104,
+                columnNumber: 13
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: handleSend,
+                children: "Send"
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 110,
+                columnNumber: 13
+            }, undefined)
+        ]
+    }, void 0, true, {
+        fileName: "src/App.tsx",
+        lineNumber: 96,
+        columnNumber: 9
+    }, undefined);
+};
+_s1(ChatInterface, "HDAtGPGcvWga1zf1TBXg51T+tsc=");
+_c1 = ChatInterface;
+exports.default = ChatInterface;
+var _c, _c1;
 $RefreshReg$(_c, "App");
+$RefreshReg$(_c1, "ChatInterface");
 
   $parcel$ReactRefreshHelpers$0342.postlude(module);
 } finally {
