@@ -13,7 +13,7 @@ async function getBlogAPI(blogId) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({blogId})
+        body: JSON.stringify({ blogId })
     });
     const json = await response.json();
     console.log(json);
@@ -21,12 +21,13 @@ async function getBlogAPI(blogId) {
 }
 
 async function sendMessageAPI(blogId, context, message) {
+    console.log('sending', blogId, context, message)
     const response = await fetch(`${vanjaCloudUrl}/api/main/chat`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({blogId, context, message})
+        body: JSON.stringify({ blogId, context, message })
     });
 
     const json = await response.json();
@@ -51,7 +52,7 @@ export function App() {
     }
 
     return (<div>
-        <h1>Hello world!</h1>
+        <h1>Hello world!!!!</h1>
         <div>id: {blogId}</div>
         <p>{blogText}</p>
         <button onClick={e => sendMessageAPI(blogId, null, 'test')}>test</button>
@@ -59,23 +60,28 @@ export function App() {
     </div>);
 }
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-const ChatInterface = ({blogId}) => {
+const ChatInterface = ({ blogId }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
 
     const sendMessage = async (message) => {
         // Add the message to the chat box
-        const m = [...messages, {text: message, sender: 'user'}]
+        const m = [...messages, { text: message, type: 'user' }]
         setMessages(m);
+
+        console.log('updated local context', m)
 
         // Call your async function to get a response from the server
         const response = await sendMessageAPI(blogId, messages, message);
 
+        console.log('response', response)
         // Add the response to the chat box
-        setMessages([...m, {text: response, sender: 'server'}]);
+        const m2 = [...m, { text: response, type: 'system' }];
+        setMessages(m2);
+        console.log('updated local context', m2)
         return null;
     };
 
@@ -95,6 +101,7 @@ const ChatInterface = ({blogId}) => {
     return (
         <div>
             <div>
+                UPDATED
                 {messages.map((message, index) => (
                     <div key={index}>
                         <strong>{message.sender}:</strong> {message.text}

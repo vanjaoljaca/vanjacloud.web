@@ -27175,6 +27175,7 @@ async function getBlogAPI(blogId) {
     return json;
 }
 async function sendMessageAPI(blogId, context, message) {
+    console.log("sending", blogId, context, message);
     const response = await fetch(`${vanjaCloudUrl}/api/main/chat`, {
         method: "POST",
         headers: {
@@ -27207,17 +27208,17 @@ function App() {
             children: "initializing"
         }, void 0, false, {
             fileName: "src/App.tsx",
-            lineNumber: 50,
+            lineNumber: 51,
             columnNumber: 16
         }, this);
     }
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Hello world!"
+                children: "Hello world!!!!"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 54,
+                lineNumber: 55,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -27227,14 +27228,14 @@ function App() {
                 ]
             }, void 0, true, {
                 fileName: "src/App.tsx",
-                lineNumber: 55,
+                lineNumber: 56,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                 children: blogText
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 56,
+                lineNumber: 57,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -27242,20 +27243,20 @@ function App() {
                 children: "test"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 57,
+                lineNumber: 58,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(ChatInterface, {
                 blogId: blogId
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 58,
+                lineNumber: 59,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.tsx",
-        lineNumber: 53,
+        lineNumber: 54,
         columnNumber: 13
     }, this);
 }
@@ -27271,20 +27272,24 @@ const ChatInterface = ({ blogId  })=>{
             ...messages,
             {
                 text: message,
-                sender: "user"
+                type: "user"
             }
         ];
         setMessages(m);
+        console.log("updated local context", m);
         // Call your async function to get a response from the server
         const response = await sendMessageAPI(blogId, messages, message);
+        console.log("response", response);
         // Add the response to the chat box
-        setMessages([
+        const m2 = [
             ...m,
             {
                 text: response,
-                sender: "server"
+                type: "system"
             }
-        ]);
+        ];
+        setMessages(m2);
+        console.log("updated local context", m2);
         return null;
     };
     const handleSend = ()=>{
@@ -27299,29 +27304,32 @@ const ChatInterface = ({ blogId  })=>{
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                children: messages.map((message, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                        children: [
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
-                                children: [
-                                    message.sender,
-                                    ":"
-                                ]
-                            }, void 0, true, {
-                                fileName: "src/App.tsx",
-                                lineNumber: 100,
-                                columnNumber: 25
-                            }, undefined),
-                            " ",
-                            message.text
-                        ]
-                    }, index, true, {
-                        fileName: "src/App.tsx",
-                        lineNumber: 99,
-                        columnNumber: 21
-                    }, undefined))
-            }, void 0, false, {
+                children: [
+                    "UPDATED",
+                    messages.map((message, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                            children: [
+                                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                    children: [
+                                        message.sender,
+                                        ":"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "src/App.tsx",
+                                    lineNumber: 107,
+                                    columnNumber: 25
+                                }, undefined),
+                                " ",
+                                message.text
+                            ]
+                        }, index, true, {
+                            fileName: "src/App.tsx",
+                            lineNumber: 106,
+                            columnNumber: 21
+                        }, undefined))
+                ]
+            }, void 0, true, {
                 fileName: "src/App.tsx",
-                lineNumber: 97,
+                lineNumber: 103,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -27331,7 +27339,7 @@ const ChatInterface = ({ blogId  })=>{
                 onKeyPress: handleKeyPress
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 104,
+                lineNumber: 111,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -27339,13 +27347,13 @@ const ChatInterface = ({ blogId  })=>{
                 children: "Send"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 110,
+                lineNumber: 117,
                 columnNumber: 13
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/App.tsx",
-        lineNumber: 96,
+        lineNumber: 102,
         columnNumber: 9
     }, undefined);
 };

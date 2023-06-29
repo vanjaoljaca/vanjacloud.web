@@ -1,2 +1,6 @@
 .parcel-cache
 node_modules
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/modules.xml
+/.idea/vanjacloud.web.iml
+/.idea/vcs.xml
