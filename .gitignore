@@ -4,3 +4,4 @@ node_modules
 /.idea/modules.xml
 /.idea/vanjacloud.web.iml
 /.idea/vcs.xml
+*.js.map
