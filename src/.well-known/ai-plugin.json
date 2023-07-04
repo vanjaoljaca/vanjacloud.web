@@ -3,7 +3,7 @@
     "name_for_human": "vanjacloud",
     "name_for_model": "vanjacloud",
     "description_for_human": "vanjacloud chatgpt integration.",
-    "description_for_model": "Help the user with managing a TODO list. You can add, remove and view your TODOs.",
+    "description_for_model": "Central cloud for vanja, a Jarvis-like system that does a bit of everything. This plugin helps ChatGPT understand how the user wants to be interacted with.",
     "auth": {
         "type": "none"
     },

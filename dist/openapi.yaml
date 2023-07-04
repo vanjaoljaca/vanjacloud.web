@@ -17,6 +17,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getSpotifyResponse'
+  /main/chatgpt:
+    get:
+      operationId: getChatGpt
+      summary: Get ChatGPT integration preferences
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getChatGptResponse'
 components:
   schemas:
     getSpotifyResponse:
@@ -25,3 +36,11 @@ components:
         spotify:
           type: boolean
           description: A boolean indicating whether spotify is enabled or not.
+
+    getChatGptResponse:
+      type: object
+      properties:
+        preferences:
+          type: string
+          description: A natural language string describing the user preferences for this chat
+
