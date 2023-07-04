@@ -9,10 +9,10 @@
     },
     "api": {
         "type": "openapi",
-        "url": "https://vanja.oljaca.me/openapi.yaml",
+        "url": "https://vanjacloud.oljaca.me/openapi.yaml",
 
     },
-    "logo_url": "https://vanja.oljaca.me/img.png",
+    "logo_url": "https://vanjacloud.oljaca.me/img.png",
     "contact_email": "vanjab+vanjacloud@gmail.com",
-    "legal_info_url": "https://vanja.oljaca.me/legal.txt"
+    "legal_info_url": "https://vanjacloud.oljaca.me/legal.txt"
 }
