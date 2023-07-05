@@ -9,6 +9,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { MessageModel, MessagePayload } from "@chatscope/chat-ui-kit-react/src/components/Message/Message";
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
+import * as Spinners from 'react-spinners';
 
 const isProd = true;
 
@@ -48,8 +49,40 @@ export function App() {
   </div>);
 }
 
+import React, { useState, useEffect } from 'react';
+
+function ColorChangingComponent() {
+  const [color, setColor] = useState('hsl(0, 100%, 50%)');
+  const [transitionDuration, setTransitionDuration] = useState('0.433s');
+
+  useEffect(() => {
+    let hue = 0;
+    const intervalId = setInterval(() => {
+      hue = (hue + 1) % 360;
+      setColor(`hsl(${hue}, 100%, 50%)`);
+
+      // Oscillate transition duration between 0.433s and 1.3s
+      setTransitionDuration(`${(Math.sin(hue / 60) + 1) / 2 * 0.867 + 0.433}s`);
+    }, 20);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return (
+    <div
+      style={{
+        backgroundColor: color,
+        transition: `background-color ${transitionDuration} cubic-bezier(0.47, 0, 0.745, 0.715)`,
+        width: '100vw',
+        height: '100vh',
+      }}
+    />
+  );
+}
+
 function ChatInterface({blogId}) {
   const [context, setContext] = useState<MessageModel[]>([]);
+  const [inflight, setInflight] = useState(0);
 
   function addMessage(sender, text) {
     const m = {
@@ -72,74 +105,23 @@ function ChatInterface({blogId}) {
                 model={model}
                 />))
             }
+            <Spinners.PacmanLoader
+              loading={inflight != 0}
+              color="goldenrod"
+              size={15} />
           </MessageList>
           <MessageInput placeholder="Type message here"
                   onSend={async (message) => {
                     console.log('sending', message)
                     addMessage('user', message);
+                    setInflight(i => i + 1)
                     const r = await sendMessageAPI(blogId, [], message)
                     console.log('received', r)
                     addMessage('system', r);
+                    setInflight(i => i - 1)
                   }}
             />
         </ChatContainer>
       </MainContainer>
     </div>);
 }
-
-const ChatInterface2 = ({blogId}) => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-
-
-  const sendMessage = async (message) => {
-    // Add the message to the chat box
-    const m = [...messages, {text: message, type: 'user'}]
-    setMessages(m);
-
-    console.log('updated local context', m)
-
-    // Call your async function to get a response from the server
-    const response = await sendMessageAPI(blogId, messages, message);
-
-    console.log('response', response)
-    // Add the response to the chat box
-    const m2 = [...m, {text: response, type: 'system'}];
-    setMessages(m2);
-    console.log('updated local context', m2)
-    return null;
-  };
-
-  const handleSend = () => {
-    if (input.trim() !== '') {
-      sendMessage(input);
-      setInput('');
-    }
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSend();
-    }
-  };
-
-  return (
-    <div>
-      <div>
-        UPDATED
-        {messages.map((message, index) => (
-          <div key={index}>
-            <strong>{message.type}:</strong> {message.text}
-          </div>
-        ))}
-      </div>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyPress={handleKeyPress}
-      />
-      <button onClick={handleSend}>Send</button>
-    </div>
-  );
-};

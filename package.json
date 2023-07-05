@@ -4,7 +4,8 @@
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@parcel/core": "^2.9.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-spinners": "^0.13.8"
   },
   "devDependencies": {
     "@parcel/config-default": "^2.9.2",
