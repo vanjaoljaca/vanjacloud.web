@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "parcel src/index.html src/blogchat.html",
-    "build": "parcel build src/index.html src/blogchat.html"
+    "build": "parcel build src/index.html src/blogchat.html",
+    "dev": "yarn start"
   }
 }

@@ -8,3 +8,5 @@ node_modules
 **/*.map.js
 dist/index.9449556e.js.map
 dist/index.9449556e.js.map
+dist
+dist/*

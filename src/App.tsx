@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
   ChatContainer,
   MessageList,
   Message,
-  MessageInput,
+  MessageInput, MessageType,
 } from "@chatscope/chat-ui-kit-react";
+import { MessageModel, MessagePayload } from "@chatscope/chat-ui-kit-react/src/components/Message/Message";
+import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
 
 const isProd = true;
 
@@ -42,41 +44,44 @@ export function App() {
   }
 
   return (<div>
-    <div>test</div>
-    <button onClick={e => sendMessageAPI(blogId, null, 'test')}>test</button>
     <ChatInterface blogId={blogId}/>
   </div>);
 }
 
 function ChatInterface({blogId}) {
+  const [context, setContext] = useState<MessageModel[]>([]);
+
+  function addMessage(sender, text) {
+    const m = {
+      message: text,
+      sentTime: new Date().toLocaleTimeString(),
+      sender: sender,
+      direction: sender == "system" ? 'incoming' : 'outgoing'
+    } as MessageModel;
+    setContext(old => [...old, m])
+  }
+
   return (
     <div style={{position: "relative", height: "500px"}}>
       <MainContainer>
         <ChatContainer>
           <MessageList>
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "just now",
-                sender: "Joe",
-              }}
-            />
-            <Message
-              model={{
-                message: "Hello my friend\n\nkjdsjfds",
-                sentTime: "just now",
-                sender: "Joe",
-              }}
-            />
-            <Message
-              model={{
-                message: "Hello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friendHello my friend",
-                sentTime: "just now",
-                sender: "Joe",
-              }}
-            />
+            { context.map((model, index) => (
+              <Message
+                key={index}
+                model={model}
+                />))
+            }
           </MessageList>
-          <MessageInput placeholder="Type message here"/>
+          <MessageInput placeholder="Type message here"
+                  onSend={async (message) => {
+                    console.log('sending', message)
+                    addMessage('user', message);
+                    const r = await sendMessageAPI(blogId, [], message)
+                    console.log('received', r)
+                    addMessage('system', r);
+                  }}
+            />
         </ChatContainer>
       </MainContainer>
     </div>);
