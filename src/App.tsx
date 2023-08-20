@@ -50,35 +50,9 @@ export function App() {
 }
 
 import React, { useState, useEffect } from 'react';
+import ColourSpinner from "./ColourSpinner";
+import { generateAnalogousColors } from "./colours";
 
-function ColorChangingComponent() {
-  const [color, setColor] = useState('hsl(0, 100%, 50%)');
-  const [transitionDuration, setTransitionDuration] = useState('0.433s');
-
-  useEffect(() => {
-    let hue = 0;
-    const intervalId = setInterval(() => {
-      hue = (hue + 1) % 360;
-      setColor(`hsl(${hue}, 100%, 50%)`);
-
-      // Oscillate transition duration between 0.433s and 1.3s
-      setTransitionDuration(`${(Math.sin(hue / 60) + 1) / 2 * 0.867 + 0.433}s`);
-    }, 20);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  return (
-    <div
-      style={{
-        backgroundColor: color,
-        transition: `background-color ${transitionDuration} cubic-bezier(0.47, 0, 0.745, 0.715)`,
-        width: '100vw',
-        height: '100vh',
-      }}
-    />
-  );
-}
 
 function ChatInterface({blogId}) {
   const [context, setContext] = useState<MessageModel[]>([]);
@@ -94,6 +68,8 @@ function ChatInterface({blogId}) {
     setContext(old => [...old, m])
   }
 
+  const colours = generateAnalogousColors([[100,100, 100], [197,227,250]])
+
   return (
     <div style={{position: "relative", height: "500px"}}>
       <MainContainer>
@@ -105,10 +81,12 @@ function ChatInterface({blogId}) {
                 model={model}
                 />))
             }
-            <Spinners.PacmanLoader
-              loading={inflight != 0}
-              color="goldenrod"
-              size={15} />
+
+            <ColourSpinner visible={false || inflight != 0} transitionSpeed={3}
+                           // endColor={[100,0,0]} startColor={[50,120,100]}
+              endColor={colours[1]} startColor={colours[0]}
+                           pauseDuration={0.5}
+            />
           </MessageList>
           <MessageInput placeholder="Type message here"
                   onSend={async (message) => {
